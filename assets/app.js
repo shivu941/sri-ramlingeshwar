@@ -15,6 +15,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Carousel prev/next buttons (Festivals, Articles)
+  // + auto-center and hide arrows when all cards already fit without scrolling
+  var carouselTracks = document.querySelectorAll('.carousel');
+
+  function refreshCarouselFit() {
+    carouselTracks.forEach(function (track) {
+      var fits = track.scrollWidth <= track.clientWidth + 1;
+      track.classList.toggle('fits', fits);
+      var wrap = track.closest('.carousel-wrap');
+      if (wrap) {
+        wrap.querySelectorAll('.car-btn').forEach(function (btn) {
+          btn.classList.toggle('is-hidden', fits);
+        });
+      }
+    });
+  }
+  refreshCarouselFit();
+  window.addEventListener('resize', refreshCarouselFit);
+
   document.querySelectorAll('.car-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var track = document.getElementById(btn.getAttribute('data-target'));
